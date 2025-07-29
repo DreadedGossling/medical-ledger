@@ -9,9 +9,7 @@ const Layout = () => {
         {/* Center: Navigation Menu */}
         <nav className="space-x-6 flex justify-center">
           <Link to="/" className="hover:text-cyan-600">Products</Link>
-          <Link to="/add-product" className="hover:text-cyan-600">Add Product</Link>
           <Link to="/users" className="hover:text-cyan-600">User</Link>
-          <Link to="/add-user" className="hover:text-cyan-600">Add User</Link>
         </nav>
         {/* Right: Buttons */}
         <div className="space-x-2 flex">

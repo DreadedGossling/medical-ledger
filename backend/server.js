@@ -18,7 +18,7 @@ app.listen(PORT, () => {
   console.log(`Server is running successfully on Port ==> ${PORT}`);
 });
 
-//For Product
+// --------------- For Product ----------------
 
 // API Endpoint to Get All Products
 app.get("/api/products", async (req, res) => {
@@ -30,7 +30,6 @@ app.get("/api/products", async (req, res) => {
 
 //API Endpoint to Get Single Data
 app.get('/api/product/:id', async (req, res) => {
-  // console.log(`Searching Product with Id ==> ${id}`)
   try {
     const id = req.params.id;
     const item = await Product.findById(id);
@@ -53,11 +52,12 @@ app.post('/api/add-product', async (req, res) => {
       price: data.price,
       stock: data.stock,
       type: data.type,
-      status: "Available"
+      status: data.status,
+      createdAt: data.createdAt || new Date()
     })
     console.log(`Adding Product Intitalize with Product ==> ${product}`)
-    await product.save();
-    res.status(201).send({ message: 'Product saved successfully', item: newItem });
+    const savedProduct = await product.save();
+    res.status(201).send({ message: 'Product saved successfully', item: savedProduct });
   } catch (error) {
     res.status(500).send({ message: 'Error creating Product ==> ', error });
   }
@@ -65,7 +65,10 @@ app.post('/api/add-product', async (req, res) => {
 
 //API endpoint to update data
 app.put("/api/edit-product/:id", async (req, res) => {
-  await Product.findByIdAndUpdate(req.params.id, req.body);
+  await Product.findByIdAndUpdate(req.params.id, {
+    ...req.body,
+    updatedAt: new Date()
+  });
   res.json({ message: "Product updated successfully" });
 });
 
@@ -82,7 +85,7 @@ app.delete('/api/delete-product/:id', async (req, res) => {
 });
 
 
-// For User
+// ------------ For User -------------------
 
 // API Endpoint to Get All Users
 app.get("/api/users", async (req, res) => {
@@ -101,11 +104,12 @@ app.post('/api/add-user', async (req, res) => {
       email: data.email,
       password: data.password,
       role: data.role,
-      status: "Active"
+      status: "Active",
+      createdAt: new Date(),
     })
     console.log(`Adding User Intitalize with user ==> ${user}`)
-    await user.save();
-    res.status(201).send({ message: 'User created successfully ==> ', item: newItem });
+    const savedUser = await user.save();
+    res.status(201).send({ message: 'User created successfully ==> ', item: savedUser });
   } catch (error) {
     res.status(500).send({ message: 'Error creating User ==> ', error });
   }
@@ -118,7 +122,7 @@ app.patch('/api/user/update-status/:id', async (req, res) => {
     const { status } = req.body;
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { status: status },
+      { status: status, updatedAt: new Date() },
       { new: true }
     );
     if (!updatedUser) {
