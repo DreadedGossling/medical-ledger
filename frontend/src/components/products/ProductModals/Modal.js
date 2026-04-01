@@ -1,10 +1,10 @@
 import ProductModal from "./Product";
 
-export default function Modal({
+const Modal = ({
   setShowModal,
   setProducts,
   product,
-  setEditableProduct }) {
+  setEditableProduct }) => {
 
   const handleClose = () => {
     setShowModal(false);
@@ -13,18 +13,15 @@ export default function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg relative p-10">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-extrabold font-serif flex items-center gap-2 text-cyan-700">
-            <span className="relative text-3xl">Add Product</span>
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-lg relative px-10 pt-4 pb-6">
+        <div className="flex items-center justify-between my-4">
+          <h2 className="text-3xl font-extrabold font-serif mx-auto text-cyan-700 shadow-sm 
+                          shadow-current rounded-2xl p-2">
+            <>
+              <span className="ml-2">{product ? "✎" : "+"}</span>
+              <span className="relative text-3xl mx-2">{product ? "Edit Product" : "Add Product"}</span>
+            </>
           </h2>
-          <button
-            className="text-gray-500 hover:text-gray-600 text-4xl font-bold"
-            onClick={handleClose}
-            aria-label="Close"
-          >
-            &times;
-          </button>
         </div>
         <ProductModal
           product={product ? product : null}
@@ -35,3 +32,5 @@ export default function Modal({
     </div>
   );
 }
+
+export default Modal;
